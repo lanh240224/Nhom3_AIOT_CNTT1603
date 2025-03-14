@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ESP32-CAM YOLOv8</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.4/socket.io.js"></script>
+  <style>
+    .traffic-light {
+      width: 60px;
+      height: 200px;
+      background: black;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      align-items: center;
+      padding: 10px;
+    }
+
+    .light {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: gray;
+    }
+
+    .timer {
+      font-size: 18px;
+      font-weight: bold;
+      color: white;
+    }
+  </style>
+  <script>
+    var socket = io.connect("http://" + document.domain + ":" + location.port);
+    var countdownInterval; // Biến lưu trữ bộ đếm ngược
+
+    socket.on("update_traffic", function (data) {
+      console.log("Dữ liệu nhận từ server:", data); // Kiểm tra dữ liệu nhận được
+
+      if (!data || data.north_south === undefined || data.east_west === undefined || data.countdown === undefined) {
+        console.error("Lỗi: Dữ liệu nhận được không hợp lệ!", data);
+        return;
+      }
+
+      const nsState = data.north_south; // Trạng thái đèn Bắc - Nam
+      const ewState = data.east_west;   // Trạng thái đèn Đông - Tây
+      let timer = data.countdown;       // Thời gian đếm ngược từ server
+
+      // Xóa bộ đếm trước đó nếu có
+      if (countdownInterval) {
+        clearInterval(countdownInterval);
+      }
+
+      // Reset tất cả đèn về màu xám
+      document.querySelectorAll(".light").forEach(light => {
+        light.style.background = "gray";
+      });
+
+      // Cập nhật đèn theo trạng thái nhận được
+      if (nsState === "green") {
+        document.getElementById("green_ns").style.background = "green";
+        document.getElementById("red_ew").style.background = "red";
+      } else if (nsState === "yellow") {
+        document.getElementById("yellow_ns").style.background = "yellow";
+        document.getElementById("red_ew").style.background = "red";
+      } else {
+        document.getElementById("red_ns").style.background = "red";
+        if (ewState === "green") {
+          document.getElementById("green_ew").style.background = "green";
+        } else if (ewState === "yellow") {
+          document.getElementById("yellow_ew").style.background = "yellow";
+        } else {
+          document.getElementById("red_ew").style.background = "red";
+        }
+      }
+
+      // Hiển thị thời gian đếm ngược ngay lập tức
+      document.getElementById("timer_ns").innerText = timer;
+      document.getElementById("timer_ew").innerText = timer;
+
+      // Tạo bộ đếm ngược mới
+      countdownInterval = setInterval(() => {
+        timer--;
+        if (timer >= 0) {
+          document.getElementById("timer_ns").innerText = timer;
+          document.getElementById("timer_ew").innerText = timer;
+        } else {
+          clearInterval(countdownInterval); // Dừng khi timer về 0
+        }
+      }, 1000);
+    });
+
+  </script>
+</head>
+
+<body>
+  <h1>ESP32-CAM - Nhận diện ô tô với YOLOv8</h1>
+  <div style="display: flex; gap: 10px;">
+    <!-- Hướng Bắc - Nam -->
+    <div style="display: flex; flex-direction: column; align-items: center;">
+      <h2>Hướng Bắc - Nam</h2>
+      <div>
+        <div class="traffic-light">
+          <div class="traffic-light" id="traffic_light_ew">
+            <div class="light" id="red_ew"></div>
+            <div class="light" id="yellow_ew"></div>
+            <div class="light" id="green_ew"></div>
+            <div id="timer_ew" class="timer">--</div> <!-- Đếm ngược -->
+          </div>
+        </div>
+      </div>
+      <div style="display: flex; gap: 10px;">
+        <div>
+          <h3>Camera 1</h3>
+          <img src="/video_feed/1" width="640">
+        </div>
+        <div>
+          <h3>Camera 3</h3>
+          <img src="/video_feed/3" width="640">
+        </div>
+      </div>
+    </div>
+
+    <!-- HƯớng Đông - Tây -->
+    <div style="display: flex; flex-direction: column; align-items: center;">
+      <h2>Hướng Đông - Tây</h2>
+      <div>
+        <div class="traffic-light" id="traffic_light_ns">
+          <div class="light" id="red_ns"></div>
+          <div class="light" id="yellow_ns"></div>
+          <div class="light" id="green_ns"></div>
+          <div id="timer_ns" class="timer">--</div> <!-- Đếm ngược -->
+        </div>
+      </div>
+      <div style="display: flex; gap: 10px;">
+        <div>
+          <h3>Camera 2</h3>
+          <img src="/video_feed/0" width="640">
+        </div>
+        <div>
+          <h3>Camera 4</h3>
+          <img src="/video_feed/2" width="640">
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>
