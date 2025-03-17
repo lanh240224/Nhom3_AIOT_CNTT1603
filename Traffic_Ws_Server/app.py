@@ -1,10 +1,14 @@
 import asyncio
-from websocket_client import websocket_server, connected_clients
+import websockets
+from websocket_client import handle_client
 from traffic import traffic_light
 
 async def main():
-    """Khởi chạy WebSocket Server và hệ thống đèn giao thông"""
-    await asyncio.gather(websocket_server(), traffic_light(connected_clients))
+    server = await websockets.serve(handle_client, "0.0.0.0", 8765)
+    print("🚀 WebSocket server đang chạy trên cổng 8765")
+
+    # Chạy song song server và traffic_light
+    await asyncio.gather(server.wait_closed(), traffic_light())
 
 if __name__ == "__main__":
     asyncio.run(main())
