@@ -117,7 +117,7 @@ define YELLOW_PIN 15
 Sao chép mã nguồn về máy và di chuyển vào thư mục dự án:
 
 ```bash
-git clone <your-repo-url>
+git clone "https://github.com/ThanhLog/AIOT"
 cd TrafficAIOT
 Cài đặt thư viện
 Cài đặt các thư viện Python cần thiết từ requirements.txt:
