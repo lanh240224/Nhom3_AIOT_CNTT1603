@@ -124,7 +124,7 @@ Cài đặt các thư viện Python cần thiết từ requirements.txt:
 
 pip install -r requirements.txt
 
-3Tải mô hình YOLOv8
+Tải mô hình YOLOv8
 Tải mô hình YOLOv8 Segmentation và lưu vào thư mục traffic_density_server/:
 wget https://github.com/ultralytics/assets/releases/download/v0.0.0/yolov8m-seg.pt
 
