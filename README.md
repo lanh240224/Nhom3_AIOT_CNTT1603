@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🚦 Hệ Thống Giám Sát Mật Độ Giao Thông Dùng Flask & YOLOv8
 <p align="center">
   <img src="images/logoDaiNam.png" alt="DaiNam University Logo" width="200"/>
@@ -157,3 +158,6 @@ Mã nguồn nằm trong thư mục Traffic_Ws_Server/.
 
 ```
 ![Poster Nhóm ](images/poster.png)
+=======
+# Nhom3_AIOT_CNTT1603
+>>>>>>> 214c1bf6a10f89fee5b1027bebcf36e434933edc
