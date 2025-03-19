@@ -157,7 +157,7 @@ define YELLOW_PIN  15
 Mã nguồn nằm trong thư mục Traffic_Ws_Server/.
 
 ```
-![Poster Nhóm ](images/poster.png)
+![Poster Nhóm ](images/poster AI-IoT .png)
 =======
 # Nhom3_AIOT_CNTT1603
 >>>>>>> 214c1bf6a10f89fee5b1027bebcf36e434933edc
