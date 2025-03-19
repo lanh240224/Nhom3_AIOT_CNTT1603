@@ -161,4 +161,7 @@ Mã nguồn nằm trong thư mục Traffic_Ws_Server/.
 
 =======
 # Nhom3_AIOT_CNTT1603
->>>>>>> 214c1bf6a10f89fee5b1027bebcf36e434933edc
+Tác giả: 1. Lê Thành Long
+         2. Nguyễn Thị Lan Anh
+         3. Nguyễn Duy Đạt
+         4. Đậu Cao Minh Nhật
